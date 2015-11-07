@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView	xmlns="http://xamarin.com/schemas/2014/forms"
+							xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+							x:Class="RelayFlashReport.ReportCell">
+	<ContentView.Content>
+		<StackLayout Orientation="Horizontal" Padding="10, 0">
+			<Label x:Name="LabelNumber" Text="{Binding Number}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Medium"/>
+			<Entry x:Name="EntryName" Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+			<Label x:Name="LabelLap" Text="{Binding Lap}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
+			<Label x:Name="LabelTotal" Text="{Binding Total}" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
+		</StackLayout>
+	</ContentView.Content>
+</ContentView>

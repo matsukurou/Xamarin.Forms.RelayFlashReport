@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage	xmlns="http://xamarin.com/schemas/2014/forms"
+							xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+							xmlns:controls="clr-namespace:RelayFlashReport;assembly=RelayFlashReport"
+							x:Class="RelayFlashReport.ReportPage"
+							BackgroundColor="#ffffe0">
+	<ContentPage.Content >
+		<Grid RowSpacing="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1.5*"/>
+				<RowDefinition Height="7*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<ScrollView Grid.Row="1" BackgroundColor="Fuchsia" VerticalOptions="CenterAndExpand">
+				<StackLayout x:Name="ListReport" >
+				</StackLayout>
+			</ScrollView>
+
+			<StackLayout Grid.Row="0" BackgroundColor="#ffffe0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+				<Label x:Name="LabelTotalTime" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="30" TextColor="Navy"/>
+				<Label x:Name="LabelCurrentRunnderTime" HorizontalOptions="Center" FontSize="24" TextColor="Navy"/>
+			</StackLayout>
+				<!--<ListView Grid.Row="2" x:Name="ListReport" ItemsSource="{Binding}">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<StackLayout Orientation="Horizontal">
+									<Label Text="{Binding Number}"/>
+									<Entry Text="{Binding Name}"/>
+									<Label Text="{Binding Lap}"/>
+									<Label Text="{Binding Total}"/>
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>-->
+			
+			<StackLayout Grid.Row="2" BackgroundColor="#ffffe0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+				<Button x:Name="ButtonStart" Text="Start" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonStart_Clicked"/>
+				<Button x:Name="ButtonLap" Text="Lap" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonLap_Clicked" IsVisible="false"/>
+				<Button x:Name="ButtonStop" Text="Stop" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonStop_Clicked"/>
+				<Button x:Name="ButtonReset" Text="Reset" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonReset_Clicked" IsVisible="false"/>
+			</StackLayout>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>

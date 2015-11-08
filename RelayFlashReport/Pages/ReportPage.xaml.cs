@@ -8,19 +8,32 @@ namespace RelayFlashReport
 {
     public partial class ReportPage : ContentPage
     {
-        TimeSpan TotalTime = TimeSpan.Zero;
+        /// <summary>
+        /// スタート時間
+        /// </summary>
+        DateTime StartTime;
 
-        TimeSpan BeforeTotalTime = TimeSpan.Zero;
+        /// <summary>
+        /// 走りきった時間
+        /// </summary>
+        DateTime LastTime;
 
-        TimeSpan CurrentRunnerTime { get { return (TotalTime - BeforeTotalTime); } }
+        /// <summary>
+        /// 経過時間
+        /// Continue時に使用
+        /// </summary>
+        TimeSpan ElapsedTime = TimeSpan.Zero;
 
-        Stopwatch stopWatch = new Stopwatch();
+        /// <summary>
+        /// 速報中か判定
+        /// </summary>
+        bool isReporting;
 
         public ReportPage()
         {
             InitializeComponent();
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 5; i++)
             {
                 // 表示位置合わせ
                 var number = (i + 1).ToString();
@@ -51,10 +64,13 @@ namespace RelayFlashReport
         /// </summary>
         void Initialize()
         {
+            // トータルタイムの初期化
             LabelTotalTime.Text = TimeSpanToString(TimeSpan.Zero);
 
+            // ラップタイムの初期化
             LabelCurrentRunnderTime.Text = TimeSpanToString(TimeSpan.Zero);
 
+            // セルの初期化
             foreach (View view in ListReport.Children)
             {
                 if (view is ReportCell)
@@ -70,89 +86,69 @@ namespace RelayFlashReport
 
                     // ラップタイムを設定
                     cell.LapTime = TimeSpanToString(TimeSpan.Zero, false);
-
-                    // ここまでのトータルタイムを保管
-                    BeforeTotalTime = TotalTime;
-
-                    break;
                 }
             }
         }
 
         /// <summary>
-        /// スタートボタン押し
+        /// 速報イベントを設定する
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void ButtonStart_Clicked(object sender, EventArgs e)
+        void SetReportEvent()
         {
-            // ストップウォッチをリセットしてスタート
-            stopWatch.Restart();
-
-            ButtonStart.IsVisible = false;
-
-            ButtonLap.IsVisible = true;
-
+            // タイマーで10ms秒ごとに呼び出す
+            // falseを返すとタイマー終了
             Device.StartTimer(TimeSpan.FromMilliseconds(10), () =>
                 {
-                    // 全経過時間を設定
-                    TotalTime = stopWatch.Elapsed;
+                    if (isReporting == false)
+                        return false;
 
-                    // 全経過時間をラベルに設定
-                    LabelTotalTime.Text = TimeSpanToString(TotalTime);
-
-                    // 現在走者の経過時間をラベルに設定
-                    LabelCurrentRunnderTime.Text = TimeSpanToString(CurrentRunnerTime);
+                    // 速報を設定する
+                    SetFlashReport(false);
 
                     return true;
                 });
         }
 
         /// <summary>
-        /// ラップボタン押し
+        /// 速報の設定
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void ButtonLap_Clicked(object sender, EventArgs e)
+        /// <param name="isSetLap">If set to <c>true</c> is set lap.</param>
+        void SetFlashReport(bool isSetLap)
         {
-            // タイムを記録
-            RecordTime();
+            // 現在時間を取得
+            var now = DateTime.Now;
+
+            // トータルタイムを取得
+            //TotalTime = stopWatch.Elapsed;
+            var totalTime = now - LastTime + ElapsedTime;
+
+            // ラップタイムを取得
+            var lapTime = now - LastTime;
+
+            // 全経過時間をラベルに設定
+            //LabelTotalTime.Text = TimeSpanToString(totalTime);
+            LabelTotalTime.Text = TimeSpanToString(totalTime);
+
+            // 現在走者の経過時間をラベルに設定
+            LabelCurrentRunnderTime.Text = TimeSpanToString(lapTime);
+
+            if (isSetLap)
+            {
+                // 経過時間を保管
+                ElapsedTime += (now - LastTime);
+
+                // ここまでの時間を保管
+                LastTime = now;
+
+                // セルに速報値を設定する
+                SetReportTimeCell(totalTime, lapTime);
+            }                        
         }
 
         /// <summary>
-        /// ストップボタン押し
+        /// セルに速報値を設定する
         /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void ButtonStop_Clicked(object sender, EventArgs e)
-        {
-            // ストップウォッチ停止
-            stopWatch.Stop();
-
-            // タイムを記録
-            RecordTime();
-
-            ButtonReset.IsVisible = true;
-        }
-
-        /// <summary>
-        /// リセットボタン押し
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        void ButtonReset_Clicked(object sender, EventArgs e)
-        {
-            // ストップウォッチ初期化
-            stopWatch.Reset();
-
-            // 初期化
-            Initialize();
-        }
-
-        /// <summary>
-        /// タイムを保管
-        /// </summary>
-        void RecordTime()
+        void SetReportTimeCell(TimeSpan totalTime, TimeSpan lapTime)
         {
             foreach (View view in ListReport.Children)
             {
@@ -169,19 +165,107 @@ namespace RelayFlashReport
                     cell.IsRecorded = true;
 
                     // トータルタイムを設定
-                    cell.TotalTime = TimeSpanToString(TotalTime, false);
+                    cell.TotalTime = TimeSpanToString(totalTime, false);
 
                     // ラップタイムを設定
-                    cell.LapTime = TimeSpanToString(CurrentRunnerTime, false);
-
-                    // ここまでのトータルタイムを保管
-                    BeforeTotalTime = TotalTime;
+                    cell.LapTime = TimeSpanToString(lapTime, false);
 
                     break;
                 }
             }
         }
 
+        /// <summary>
+        /// ボタンの有効無効を設定
+        /// </summary>
+        /// <param name="isEnableStart">If set to <c>true</c> is enable start.</param>
+        /// <param name="isEnableLap">If set to <c>true</c> is enable lap.</param>
+        /// <param name="isEnableStop">If set to <c>true</c> is enable stop.</param>
+        /// <param name="isEnableReset">If set to <c>true</c> is enable reset.</param>
+        void SetButtonEnabled(bool isEnableStart, bool isEnableLap, bool isEnableStop, bool isEnableReset)
+        {
+            ButtonStart.IsEnabled = isEnableStart;
+            ButtonLap.IsEnabled = isEnableLap;
+            ButtonStop.IsEnabled = isEnableStop;
+            ButtonReset.IsEnabled = isEnableReset;
+        }
+
+        /// <summary>
+        /// スタートボタン押し
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void ButtonStart_Clicked(object sender, EventArgs e)
+        {
+            // 現在時間を取得
+            var now = DateTime.Now;
+
+            // スタート時間を保管
+            StartTime = now;
+
+            // ランナータイムを保管
+            LastTime = now;
+
+            // 経過時間をリセット
+            ElapsedTime = TimeSpan.Zero;
+
+            // ボタンの有効無効を設定
+            SetButtonEnabled(false, true, true, false);
+
+            // 速報イベント開始
+            isReporting = true;
+
+            // 速報イベントを設定
+            SetReportEvent();
+        }
+            
+        /// <summary>
+        /// ラップボタン押し
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void ButtonLap_Clicked(object sender, EventArgs e)
+        {            
+            // 速報値を設定
+            SetFlashReport(true);
+        }
+
+        /// <summary>
+        /// ストップボタン押し
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void ButtonStop_Clicked(object sender, EventArgs e)
+        {
+            if (isReporting == false)
+                return;
+
+            // 速報イベントを終了
+            isReporting = false;
+
+            // 速報値を設定する
+            SetFlashReport(true);
+
+            // ボタンの有効無効を設定
+            SetButtonEnabled(true, false, false, true);
+
+            //Buttons.colu
+        }
+
+        /// <summary>
+        /// リセットボタン押し
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">E.</param>
+        void ButtonReset_Clicked(object sender, EventArgs e)
+        {
+            // 初期化
+            Initialize();
+
+            // ボタンの有効無効を設定
+            SetButtonEnabled(true, false, false, false);
+        }
+            
         /// <summary>
         /// TimeSpanを表示形式のStringへ変換
         /// </summary>
@@ -196,6 +280,9 @@ namespace RelayFlashReport
         }
     }
 
+    /// <summary>
+    /// セルに設定するアイテム
+    /// </summary>
     public class ReportCellItem
     {
         public string Number { get; set; }

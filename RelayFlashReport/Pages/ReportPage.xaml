@@ -3,53 +3,56 @@
 							xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 							xmlns:controls="clr-namespace:RelayFlashReport;assembly=RelayFlashReport"
 							x:Class="RelayFlashReport.ReportPage"
-							BackgroundColor="#ffffe0">
+							BackgroundColor="#e6e6fa">
+	<ContentPage.Padding>
+		<OnPlatform x:TypeArguments="Thickness">
+			<OnPlatform.iOS>
+				0, 20, 0, 0
+			</OnPlatform.iOS>
+		</OnPlatform>
+	</ContentPage.Padding>
+
 	<ContentPage.Content >
 		<Grid RowSpacing="0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="2*"/>
+				<RowDefinition Height="2.2*"/>
+				<RowDefinition Height="0.5*"/>
 				<RowDefinition Height="7*"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
-			<ScrollView Grid.Row="1" BackgroundColor="Fuchsia" VerticalOptions="CenterAndExpand">
+			<ScrollView Grid.Row="2" BackgroundColor="#e6e6fa" VerticalOptions="Start">
 				<StackLayout x:Name="ListReport" >
-					<StackLayout Orientation="Horizontal" Padding="10, 0">
-						<Label Text="No." VerticalOptions="Center" HorizontalOptions="Center"/>
-						<Label Text="Name                       " VerticalOptions="Center" HorizontalOptions="Center"/>
-						<Label Text="Lap Time" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-						<Label Text="Total Time" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+					<StackLayout Orientation="Horizontal" Padding="5, 0">
 					</StackLayout>
 				</StackLayout>
 			</ScrollView>
 
-			<ScrollView Grid.Row="0" Padding="0">
-				<StackLayout BackgroundColor="#ffffe0" Spacing="0">
-					<Label Text="Total Time" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
-					<Label x:Name="LabelTotalTime" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="30" TextColor="Navy"/>
-					<Label Text="Time of the Current Runner" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
-					<Label x:Name="LabelCurrentRunnderTime" HorizontalOptions="Center" FontSize="24" TextColor="Navy"/>
-				</StackLayout>
-			</ScrollView>
-				<!--<ListView Grid.Row="2" x:Name="ListReport" ItemsSource="{Binding}">
-					<ListView.ItemTemplate>
-						<DataTemplate>
-							<ViewCell>
-								<StackLayout Orientation="Horizontal">
-									<Label Text="{Binding Number}"/>
-									<Entry Text="{Binding Name}"/>
-									<Label Text="{Binding Lap}"/>
-									<Label Text="{Binding Total}"/>
-								</StackLayout>
-							</ViewCell>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>-->
-			<StackLayout Grid.Row="2" BackgroundColor="#ffffe0" Spacing="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
-				<Button x:Name="ButtonLap" Text="Lap" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonLap_Clicked" IsEnabled="false"/>
-				<Button x:Name="ButtonStart" Text="Start" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonStart_Clicked"/>
-				<Button x:Name="ButtonStop" Text="Stop" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonStop_Clicked" IsEnabled="false"/>
-				<Button x:Name="ButtonReset" Text="Reset" HorizontalOptions="Center" VerticalOptions="Center" Clicked="ButtonReset_Clicked" IsEnabled="false"/>
+			<StackLayout Grid.Row="0" BackgroundColor="#ffffe0" Padding="0, 1" Spacing="0" VerticalOptions="FillAndExpand">
+				<Label Text="Total Time" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
+				<Label x:Name="LabelTotalTime" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="30" TextColor="Navy"/>
+				<Label Text="Time of the Current Runner" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
+				<Label x:Name="LabelCurrentRunnderTime" VerticalOptions="Center" HorizontalOptions="Center" FontSize="24" TextColor="Navy"/>
+			</StackLayout>
+
+			<Grid Grid.Row="1" BackgroundColor="#e6e6fa" Padding="5, 0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="3*"/>
+					<ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="2*"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0" Text="No." VerticalOptions="Center" HorizontalOptions="CenterAndExpand" TextColor="Navy"/>
+				<Label Grid.Column="1" Text="Name" VerticalOptions="Center" HorizontalOptions="StartAndExpand" TextColor="Navy"/>
+				<Label Grid.Column="2" Text="Lap" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" TextColor="Navy"/>
+				<Label Grid.Column="3" Text="Total" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" TextColor="Navy"/>
+			</Grid>
+
+			<StackLayout Grid.Row="3" BackgroundColor="#ffffe0" Spacing="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+				<Button x:Name="ButtonLap" Text="Lap" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Clicked="ButtonLap_Clicked" IsEnabled="false"/>
+				<Button x:Name="ButtonStart" Text="Start" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Clicked="ButtonStart_Clicked"/>
+				<Button x:Name="ButtonStop" Text="Stop" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Clicked="ButtonStop_Clicked" IsEnabled="false"/>
+				<Button x:Name="ButtonReset" Text="Reset" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Clicked="ButtonReset_Clicked" IsEnabled="false"/>
 			</StackLayout>
 		</Grid>
 	</ContentPage.Content>

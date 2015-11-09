@@ -46,5 +46,17 @@ namespace RelayFlashReport
                 LabelTotal.Text = value;
             }
         }
+
+        public Color BackgroundColor
+        {
+            get
+            {
+                return Layout.BackgroundColor;
+            }
+            set
+            {
+                Layout.BackgroundColor = value;
+            }
+        }
     }
 }

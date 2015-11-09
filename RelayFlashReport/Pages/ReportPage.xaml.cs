@@ -8,6 +8,8 @@ namespace RelayFlashReport
 {
     public partial class ReportPage : ContentPage
     {
+        const int CellCount = 21;
+
         /// <summary>
         /// スタート時間
         /// </summary>
@@ -33,7 +35,7 @@ namespace RelayFlashReport
         {
             InitializeComponent();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < CellCount; i++)
             {
                 // 表示位置合わせ
                 var number = (i + 1).ToString();
@@ -86,6 +88,9 @@ namespace RelayFlashReport
 
                     // ラップタイムを設定
                     cell.LapTime = TimeSpanToString(TimeSpan.Zero, false);
+
+                    // 色の設定
+                    cell.BackgroundColor = Color.Default;
                 }
             }
         }
@@ -176,6 +181,30 @@ namespace RelayFlashReport
         }
 
         /// <summary>
+        /// セルの色を設定
+        /// </summary>
+        void SetReportTimeCellColor()
+        {
+            foreach (View view in ListReport.Children)
+            {
+                if (view is ReportCell)
+                {
+                    // 設定するCellを取得
+                    var cell = (ReportCell)view;
+
+                    cell.BackgroundColor = Color.Default;
+
+                    // 記録済みのランナーか判定
+                    if (cell.IsRecorded == false)
+                    {
+                        cell.BackgroundColor = Color.Fuchsia;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// ボタンの有効無効を設定
         /// </summary>
         /// <param name="isEnableStart">If set to <c>true</c> is enable start.</param>
@@ -206,8 +235,8 @@ namespace RelayFlashReport
             // ランナータイムを保管
             LastTime = now;
 
-            // 経過時間をリセット
-            ElapsedTime = TimeSpan.Zero;
+            // セルの色を設定
+            SetReportTimeCellColor();
 
             // ボタンの有効無効を設定
             SetButtonEnabled(false, true, true, false);
@@ -228,6 +257,9 @@ namespace RelayFlashReport
         {            
             // 速報値を設定
             SetFlashReport(true);
+
+            // セルの色を設定
+            SetReportTimeCellColor();
         }
 
         /// <summary>
@@ -248,8 +280,6 @@ namespace RelayFlashReport
 
             // ボタンの有効無効を設定
             SetButtonEnabled(true, false, false, true);
-
-            //Buttons.colu
         }
 
         /// <summary>
@@ -261,6 +291,9 @@ namespace RelayFlashReport
         {
             // 初期化
             Initialize();
+
+            // 経過時間をここで初期化
+            ElapsedTime = TimeSpan.Zero;
 
             // ボタンの有効無効を設定
             SetButtonEnabled(true, false, false, false);
@@ -277,25 +310,6 @@ namespace RelayFlashReport
                 return timeSpan.ToString(@"hh\:mm\:ss\:ff");
             else
                 return timeSpan.ToString(@"hh\:mm\:ss");
-        }
-    }
-
-    /// <summary>
-    /// セルに設定するアイテム
-    /// </summary>
-    public class ReportCellItem
-    {
-        public string Number { get; set; }
-
-        public string Name { get; set; }
-
-        public string Lap { get; set; }
-
-        public string Total { get; set; }
-
-        public ReportCellItem()
-        {
-            
         }
     }
 }

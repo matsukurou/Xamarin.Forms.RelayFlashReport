@@ -58,5 +58,13 @@ namespace RelayFlashReport
                 Layout.BackgroundColor = value;
             }
         }
+
+        public double NameWidth
+        {
+            set 
+            {
+                EntryName.WidthRequest = value;
+            }
+        }
     }
 }

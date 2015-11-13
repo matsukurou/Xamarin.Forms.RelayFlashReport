@@ -23,16 +23,18 @@
 
 			<ScrollView Grid.Row="2" BackgroundColor="#e6e6fa" VerticalOptions="Start">
 				<StackLayout x:Name="ListReport" >
-					<StackLayout Orientation="Horizontal" Padding="5, 0">
-					</StackLayout>
 				</StackLayout>
 			</ScrollView>
 
 			<StackLayout Grid.Row="0" BackgroundColor="#ffffe0" Padding="0, 1" Spacing="0" VerticalOptions="FillAndExpand">
-				<Label Text="Total Time" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
-				<Label x:Name="LabelTotalTime" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="30" TextColor="Navy"/>
-				<Label Text="Time of the Current Runner" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
-				<Label x:Name="LabelCurrentRunnderTime" VerticalOptions="Center" HorizontalOptions="Center" FontSize="24" TextColor="Navy"/>
+				<!--<StackLayout VerticalOptions="CenterAndExpand" Spacing="0">-->
+					<Label Text="Total Time" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
+					<Label x:Name="LabelTotalTime"  TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="30"/>
+				<!--</StackLayout>-->
+				<!--<StackLayout VerticalOptions="CenterAndExpand" Spacing="0">-->
+					<Label Text="Time of the Current Runner" TextColor="Navy" VerticalOptions="Center" HorizontalOptions="Center"/>
+					<Label x:Name="LabelCurrentRunnderTime" VerticalOptions="Center" HorizontalOptions="Center" FontSize="24" TextColor="Navy"/>
+				<!--</StackLayout>-->
 			</StackLayout>
 
 			<Grid Grid.Row="1" BackgroundColor="#e6e6fa" Padding="5, 0">

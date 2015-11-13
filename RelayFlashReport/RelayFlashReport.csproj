@@ -38,9 +38,6 @@
     <Compile Include="Controls\ReportCell.xaml.cs">
       <DependentUpon>ReportCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReportPageAbsolute.xaml.cs">
-      <DependentUpon>ReportPageAbsolute.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ReportCellItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -65,9 +62,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ReportCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ReportPageAbsolute.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

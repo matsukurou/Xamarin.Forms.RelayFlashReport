@@ -35,6 +35,31 @@ namespace RelayFlashReport
         {
             InitializeComponent();
 
+            string[] runner = new string[]
+            {
+                    "神谷",
+                    "秋山",
+                    "江蔵",
+                    "宮原",
+                    "中村",
+                    "青葉",
+                    "松崎",
+                    "神谷",
+                    "秋山",
+                    "江蔵",
+                    "宮原",
+                    "中村",
+                    "青葉",
+                    "松崎",
+                    "神谷",
+                    "秋山",
+                    "江蔵",
+                    "宮原",
+                    "中村",
+                    "青葉",
+                    "松崎",
+            };
+
             for (int i = 0; i < CellCount; i++)
             {
                 // 表示位置合わせ
@@ -46,7 +71,7 @@ namespace RelayFlashReport
                 var item = new ReportCellItem()
                 {
                     Number = number,
-                    Name = "Runner " + (i + 1).ToString() + "            ",
+                    Name = runner[i], //"Runner " + (i + 1).ToString() + "            ",
                     Lap = TimeSpanToString(TimeSpan.Zero, false),
                     Total = TimeSpanToString(TimeSpan.Zero, false),
                 };
@@ -57,10 +82,10 @@ namespace RelayFlashReport
                 // ページにアイテムを追加
                 ListReport.Children.Add(cell);
             }
-
+                
             Initialize();
         }
-
+            
         /// <summary>
         /// 初期化
         /// </summary>
